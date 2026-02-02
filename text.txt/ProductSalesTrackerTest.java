@@ -14,6 +14,11 @@ class ProductSalesTrackerTest {
 		product2 = new ProductSalesTracker(3);
 	}
 
+	/**
+	 *   Create at least two instances of ProductSalesTracker 
+	 *   in the @BeforeEach method, with some sales added.
+	 */
+
 	@AfterEach
 	void tearDown() throws Exception {
 		product1 = null;

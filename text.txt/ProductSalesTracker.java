@@ -71,8 +71,9 @@ public class ProductSalesTracker {
 		
 	}
 	/**
+	 * Concatenates all doubles into one String
 	 * 
-	 * 
+	 * @return String with the form "sale1 sale2 sale3 sale4"
 	 * 
 	 */
 	public String toString() {
