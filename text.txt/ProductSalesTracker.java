@@ -8,10 +8,10 @@ public class ProductSalesTracker {
 	}
 
 	/**
-	 * addSale adds sale to sales array.
+	 * Adds a new sale to the sales array.
 	 * 
 	 * @param sale 
-	 * @return true if sale can be added to sales array.
+	 * @return True if sale can be added to sales array.
 	 */
 	
 	public boolean addSale(double sale) {
@@ -25,9 +25,9 @@ public class ProductSalesTracker {
 	}
 	
 	/**
-	 * calculate the total sales made by current store
+	 * Calculates the total sales made by current store
 	 * 
-	 * @return summation of all sales
+	 * @return Summation of all sales
 	 */
 	public double totalSales() {
 		double totalSale = 0.0;
@@ -39,6 +39,11 @@ public class ProductSalesTracker {
 		return totalSale;
 		
 	}
+	/**
+	 * Finds the lowest sale
+	 * 
+	 * @return The lowest sale
+	 */
 	public double lowestSale() {
 		double lowestSale = sales[0];
 		
@@ -50,6 +55,12 @@ public class ProductSalesTracker {
 		}
 		return lowestSale;
 	}
+	/**
+	 * Sums all the total sales, except for the lowest sale.
+	 * 
+	 * @return The summation of all sales minus the lowest sale
+	 * 
+	 */
 	public double finalSalesTotal() {
 		if(saleSize < 2) {
 			return 0.0;
@@ -59,6 +70,11 @@ public class ProductSalesTracker {
 		
 		
 	}
+	/**
+	 * 
+	 * 
+	 * 
+	 */
 	public String toString() {
 		String saleData = "";
 		
@@ -71,7 +87,5 @@ public class ProductSalesTracker {
 		return saleData;
 	}
 	
-	
-	
-	
+
 }
