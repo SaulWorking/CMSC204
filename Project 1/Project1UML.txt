@@ -1,0 +1,65 @@
+@startuml
+
+class UserAccount{
++ {readonly} {static} MAX_FAILURES: int = 3
+- username: String
+- encryptedPassword: String
+- failureCount: int
+- locked: boolean
+
++ getEncryptedPassword(): String
++ checkPassword(): boolean throws AccountLockedException, PasswordIncorrectException
++ incrementFailure(): void
++ resetFailure(): void
++ checkLockStatus(): boolean
+
++ equals(obj: Object): boolean
++ toString(): String
+}
+
+
+class UserAccessManager{
+- Accounts : List<UserAccount>
++ loadAccounts(filename: String): void throws FileNotFoundException
++ addUser(username: String, encryptedPassword: String): void throws DuplicateUserException, InvalidCommandException
++ removeUser(username: String): void throws UserNotFoundException, InvalidCommandException
++ verifyAccess(username: String, encryptedPassword: String): boolean throws UserNotFoundException, AccountLockedException, InvalidCommandException
+}
+
+class Utilities{
++ {static} encryptPassword(password: String): String
++ {static} readAccountFile(filename: String, manager: UserAccessManager): void
+}
+
+Exception DuplicateUserException{
++ DuplicateUserException(msg: String): void
+}
+Exception UserNotFoundException{
++ UserNotFoundException(msg: String): void
+}
+
+Exception InvalidCommandException{
++ InvalidCommandException(msg: String): void
+}
+
+Exception AccountLockedException{
++ AccountLockedException(msg: String): void
+}
+
+Exception PasswordIncorrectException{
++ PasswordIncorrectException(msg: String): void
+}
+
+Exception FileNotFoundException{
+}
+
+UserAccessManager ..> FileNotFoundException: throws
+UserAccessManager ..> UserNotFoundException: throws
+UserAccessManager ..> InvalidCommandException : throws
+UserAccessManager ..> DuplicateUserException: throws
+UserAccessManager ..> AccountLockedException : throws
+
+UserAccount ..> PasswordIncorrectException : throws
+UserAccount ..> AccountLockedException : throws
+
+@enduml
