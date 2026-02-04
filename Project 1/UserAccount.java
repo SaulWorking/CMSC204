@@ -28,6 +28,9 @@ public class UserAccount {
 		
 		return encryptedPassword;
 	}
+	public String getUser() {return username;}
+
+
 	public boolean checkPassword() {
 		return false;
 	}
@@ -45,6 +48,7 @@ public class UserAccount {
 	 * 
 	 * @return Account status of user.
 	 */
+	
 	public boolean checkStatus() {return locked;};
 	
 	/**
