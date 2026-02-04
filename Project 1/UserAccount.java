@@ -4,7 +4,19 @@ public class UserAccount {
 	private String username;
 	private String encryptedPassword;
 	private int failureCount;
-	private boolean locked = false;
+	private boolean locked;
+	
+	
+	public UserAccount(String username, String encryptedPassword) {
+		this.username = username;
+		this.encryptedPassword = encryptedPassword;
+		failureCount  = 0;
+		locked = false;
+	}
+	
+	public UserAccount() {
+		this("InvalidUser","");
+	}
 	
 	public String getEncryptedPassword() throws AccountLockedException, PasswordIncorrectException {
 		

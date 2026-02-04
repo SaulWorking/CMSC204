@@ -1,5 +1,7 @@
 import java.util.List;
 import java.util.ArrayList;
+import java.io.File;
+import java.util.Scanner;
 import java.io.FileNotFoundException;
 
 public class UserAccessManager {
@@ -11,6 +13,18 @@ public class UserAccessManager {
 
 	
 	public void loadAccounts(String filename)throws FileNotFoundException{
+		File userData = new File("accounts.txt");
+		
+		try(Scanner reader = new Scanner(userData)){
+			while(reader.hasNextLine()) {
+				String username = reader.next();
+				String password = reader.next();
+				password = Utilities.encryptPassword(password);
+				UserAccount user = new UserAccount(username,password);
+			}
+		}
+			
+			
 		
 	}	
 
