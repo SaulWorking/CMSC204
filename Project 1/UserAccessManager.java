@@ -11,22 +11,42 @@ public class UserAccessManager {
 		Accounts = new ArrayList<>(); 
 	}
 
-	
+	/*
+	 * This method loads all user accounts from a txt file. This the file's format.
+	 * User, EncrpytedPassword
+	 * User, EncrpytedPassword
+	 * 
+	 * @param filename 
+	 * @throws FileNotFoundException
+	 */
 	public void loadAccounts(String filename)throws FileNotFoundException{
-		File userData = new File(filename);
-		
-		try(Scanner reader = new Scanner(userData)){
+		try {		
+			File dataFile= new File(filename);
+			Scanner reader = new Scanner(dataFile);
+			
 			while(reader.hasNextLine()) {
-				String username = reader.next();
-				String password = reader.next();
-				password = Utilities.encryptPassword(password);
-				UserAccount user = new UserAccount(username,password);
+				//https://www.w3schools.com/java/ref_string_split.asp
+				String regex = "\\s+";
+				String  data = reader.nextLine().trim();
+				
+				String userInfo[] = data.split(regex);
+				
+				String username = userInfo[0];
+				String encryptedPassword = userInfo[1];
+				
+				UserAccount userAccount = new UserAccount(username,encryptedPassword);
+				Accounts.add(userAccount);
 			}
+			reader.close();
+		}catch(FileNotFoundException e) {	
+			System.out.println(e.getMessage());
+		}finally {
+			System.out.println("finished loading accounts.");
 		}
 			
 	}	
 	/**
-	 * 
+	 * This method adds users to the the UserAccessManager Accounts list.
 	 * 
 	 * @param username
 	 * @param encryptedPassword
@@ -42,8 +62,13 @@ public class UserAccessManager {
 		
 		Accounts.add(new UserAccount(username,encryptedPassword));
 	}
-	
-	//remove user has O(n) complexity
+
+	/**
+	 * This removes a given user from the UserAccessManager Accounts list.
+	 * @param username
+	 * @throws UserNotFoundException
+	 * @throws InvalidCommandException
+	 */
 	public void removeUser(String username)throws UserNotFoundException, InvalidCommandException
 	{
 		if(!Accounts.contains(username))
@@ -53,8 +78,19 @@ public class UserAccessManager {
 	}
 	//use binary search for verificfation
 	//checks account for lock
+	
+	/**
+	 *
+	 * @param username
+	 * @param encryptedPassword
+	 * @return Returns the access status of the user.
+	 * @throws UserNotFoundException
+	 * @throws AccountLockedException
+	 * @throws InvalidCommandException
+	 */
 	public boolean verifyAccess(String username, String encryptedPassword)throws UserNotFoundException,  AccountLockedException, InvalidCommandException
 	{
+		boolean canAccess = false;
 		int low =0;
 		int high = Accounts.size() - 1;
 		
@@ -65,6 +101,6 @@ public class UserAccessManager {
 		}
 		
 		
-		return false;
+		return canAccess;
 	}
 }
