@@ -1,3 +1,6 @@
+import java.util.Scanner;
+
+
 import java.util.List;
 import java.util.ArrayList;
 import java.io.File;
@@ -8,6 +11,52 @@ public class UserAccessManager
 {
 	private final boolean isLocked = true;
 	private List<UserAccount> Accounts;
+	
+	public  void checkCommand(String userInput) throws InvalidCommandException{
+		Scanner commandInput = new Scanner(System.in);
+		String userCommand = "";
+		
+		String regex = "\\s+";
+
+		String userInfo[] = userInput.split(regex);
+		
+		if(userInfo.length < 2 && !userInfo[0].equals("exit"))
+				throw new InvalidCommandException("");
+		
+		String command = userInfo[0];
+		String commandUsage = userInfo[1];
+		
+		switch(command) {
+		
+			case "add"->{
+				System.out.println("Password:");
+				userCommand = commandInput.nextLine();
+				addUser(
+				
+			}case "remove"->{
+				
+			}
+				
+				
+			
+			
+		}
+		
+		System.out.println("looks like you added  " + command + " " + commandUsage);
+		
+	}
+	
+	public static void main(String[] args) throws InvalidCommandException {
+		Scanner input = new Scanner(System.in);
+		String userInput = "";
+		
+		
+		while(!userInput.equals("exit")) {
+			userInput = input.nextLine().trim();
+			checkCommand(userInput);
+		}
+		
+	}
 	
 	public UserAccessManager()
 	{
@@ -27,6 +76,9 @@ public class UserAccessManager
 		try 
 		{		
 			File dataFile= new File(filename);
+			if(!dataFile.exists())
+				throw new FileNotFoundException("Unable to load invalid file");
+			
 			Scanner reader = new Scanner(dataFile);
 			
 			while(reader.hasNextLine()) 
@@ -36,6 +88,7 @@ public class UserAccessManager
 				String  data = reader.nextLine().trim();
 				
 				String userInfo[] = data.split(regex);
+				
 				
 				String username = userInfo[0];
 				String encryptedPassword = userInfo[1];
@@ -55,28 +108,12 @@ public class UserAccessManager
 		}
 			
 	}	
-	//https://www.geeksforgeeks.org/dsa/binary-insertion-sort/
-	/**How Does Binary insertion sort Work?
-
-    In the binary insertion sort mode, we divide the same members into two subarrays - filtered and unfiltered. The first element of the same members is in the organized subarray, and all other elements are unplanned.
-    Then we iterate from the second element to the last. In the repetition of the i-th, we make the current object our "key". This key is a feature that we should add to our existing list below.
-    In order to do this, we first use a binary search on the sorted subarray below to find the location of an element larger than our key. Let's call this position “pos.” We then right shift all the elements from pos to 1 and created Array[pos] = key.
-
-  
-	 */
-	
-	/**Approach to implement Binary Insertion sort:
-	*
-	*			Iterate the array from the second element to the last element.
-	*			Store the current element A[i] in a variable key.
-	*			Find the position of the element just greater than A[i] in the subarray from A[0] to A[i-1] using binary search. Say this element is at index pos.
-	*			Shift all the elements from index pos to i-1 towards the right.
-	*			A[pos] = key.
-    /
+                          
 	
 	
 	/**
 	 * This method adds users to the the UserAccessManager Accounts list.
+	 * It assumes the users are already sorted.
 	 * 
 	 * @param username
 	 * @param encryptedPassword
@@ -85,18 +122,32 @@ public class UserAccessManager
 	 */
 	public void addUser(String username, String encryptedPassword)throws DuplicateUserException,InvalidCommandException
 	{
-				//use binary sort to insert username alphabetically
-		try {
+		try
+		{
+			if(username == null || username.equals("") || encryptedPassword == null || encryptedPassword.equals(""))
+				throw new InvalidCommandException("Cannot add invalid user.");
+					
 			if(Accounts.contains(new UserAccount(username,encryptedPassword)))
-				throw new DuplicateUserException("Username already taken.");
-			}catch(DuplicateUserException e) {
-				System.out.println(e.getMessage());
+				throw new DuplicateUserException("Cannot add duplicate user.");
+			
+			
 		}
-		
+		catch(DuplicateUserException e) 
+		{
+			System.out.println(e.getMessage());
+		}
+		catch(InvalidCommandException e) 
+		{
+			System.out.println(e.getMessage());
+		}
 				
-				for(int  i =0; i<Accounts.size();i++) {
+		
+
+				for(int  i =0; i<Accounts.size();i++) 
+				{
 					String dataUser = Accounts.get(i).getUser();
-					if(username.compareTo(dataUser) < 0) {
+					if(username.compareTo(dataUser) < 0) 
+					{
 						Accounts.add(i,new UserAccount(username,encryptedPassword));
 						break;
 					}
@@ -104,7 +155,8 @@ public class UserAccessManager
 			
 				
 				
-			for(int i =0; i<Accounts.size();i++) {
+			for(int i =0; i<Accounts.size();i++) 
+			{
 				System.out.print(Accounts.get(i).getUser() + " ");
 			}
 			System.out.println('\n');
@@ -121,13 +173,20 @@ public class UserAccessManager
 	 */
 	public void removeUser(String username)throws UserNotFoundException, InvalidCommandException
 	{
-		if(!Accounts.contains(username))
-			throw new UserNotFoundException("User does not exist in database.");
+		if(username == null || username.equals(""))
+			throw new InvalidCommandException("Enter a valid user to remove.");
 		
-		Accounts.remove(username);
+		int userIndex = binarySearch(username);
+		
+		if(userIndex == -1)
+			throw new UserNotFoundException("Unable to remove invalid user.");
+
+		UserAccount accountToRemove = Accounts.get(userIndex);
+
+		Accounts.remove(accountToRemove);
 	}
 	
-	//use binary search for verificfation
+	//use binary search for 
 	//checks account for lock
 	
 	/**
@@ -142,29 +201,42 @@ public class UserAccessManager
 	public boolean verifyAccess(String username, String encryptedPassword)throws UserNotFoundException,  AccountLockedException, InvalidCommandException
 	{	
 		
-		
-		int userIndex = binarySearch(username);
-		try {
-		if(userIndex == -1) {
-			throw new UserNotFoundException("Unable to find user.");
+		try 
+		{
+			if(username == null || username.equals("") || encryptedPassword == null || encryptedPassword.equals(""))
+				throw new InvalidCommandException("Cannot add invalid user.");
+			
+			int userIndex = binarySearch(username);
+			
+			if(userIndex == -1) 
+				throw new UserNotFoundException("Unable to verify invalid user.");
+			
+			UserAccount user = Accounts.get(userIndex);
+			
+			if(user.checkStatus() == isLocked)
+				throw new AccountLockedException("Unable to verify locked account.");
 		}
-		UserAccount user = Accounts.get(userIndex);
-		
-		if(user.checkStatus() == isLocked)
-			throw new AccountLockedException("Account is locked. Try again in a few hours.");
-		}catch(UserNotFoundException e) {
-			System.out.println(e.getMessage());
-			return false;
-		}catch(AccountLockedException e) {
-			System.out.println(e.getMessage());
-			return false;
+		catch(InvalidCommandException e)
+		{
+				System.out.println(e.getMessage());
+				return false;
 		}
-
+		catch(UserNotFoundException e)
+		{
+				System.out.println(e.getMessage());
+				return false;	
+		}
+		catch(AccountLockedException e) 
+		{
+				System.out.println(e.getMessage());
+				return false;
+		}
+		
 		return true;
 	}
 	
 	public int binarySearch(String username) {
-		int low =0 ;
+		int low = 0;
 		int high = Accounts.size() - 1;
 		
 		while(low<=high)
@@ -188,5 +260,6 @@ public class UserAccessManager
 		}
 		return -1;
 	}
+
 	
 }
