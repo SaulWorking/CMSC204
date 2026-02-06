@@ -51,7 +51,7 @@ public class UserAccessManager
 		}
 		finally
 		{
-			System.out.println("Loading attempt finished.");
+			System.out.println("Finished loading all users.");
 		}
 			
 	}	
@@ -87,27 +87,27 @@ public class UserAccessManager
 	{
 				//use binary sort to insert username alphabetically
 		try {
-			if(Accounts.contains(username))
+			if(Accounts.contains(new UserAccount(username,encryptedPassword)))
 				throw new DuplicateUserException("Username already taken.");
 			}catch(DuplicateUserException e) {
 				System.out.println(e.getMessage());
 		}
 		
-		//what is the purpose of Math.abs + 1
-				final int capacity = Accounts.size();
 				
-				for(int  i =0; i<capacity;i++) {
+				for(int  i =0; i<Accounts.size();i++) {
 					String dataUser = Accounts.get(i).getUser();
 					if(username.compareTo(dataUser) < 0) {
 						Accounts.add(i,new UserAccount(username,encryptedPassword));
+						break;
 					}
 				}	
 			
 				
 				
 			for(int i =0; i<Accounts.size();i++) {
-				System.out.println(Accounts.get(i).getUser());
+				System.out.print(Accounts.get(i).getUser() + " ");
 			}
+			System.out.println('\n');
 		
 	}
 	
