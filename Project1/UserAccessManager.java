@@ -86,13 +86,32 @@ public class UserAccessManager
 	public void addUser(String username, String encryptedPassword)throws DuplicateUserException,InvalidCommandException
 	{
 				//use binary sort to insert username alphabetically
-		if(Accounts.contains(username))
-			throw new DuplicateUserException("Username already taken.");
+		try {
+			if(Accounts.contains(username))
+				throw new DuplicateUserException("Username already taken.");
+			}catch(DuplicateUserException e) {
+				System.out.println(e.getMessage());
+		}
 		
-		// or add to array and then sort lowest to highest lexicographically.
-	
-		Accounts.add(new UserAccount(username,encryptedPassword));
+		//what is the purpose of Math.abs + 1
+				final int capacity = Accounts.size();
+				
+				for(int  i =0; i<capacity;i++) {
+					String dataUser = Accounts.get(i).getUser();
+					if(username.compareTo(dataUser) < 0) {
+						Accounts.add(i,new UserAccount(username,encryptedPassword));
+					}
+				}	
+			
+				
+				
+			for(int i =0; i<Accounts.size();i++) {
+				System.out.println(Accounts.get(i).getUser());
+			}
+		
 	}
+	
+	
 
 	/**
 	 * This removes a given user from the UserAccessManager Accounts list.
@@ -107,6 +126,7 @@ public class UserAccessManager
 		
 		Accounts.remove(username);
 	}
+	
 	//use binary search for verificfation
 	//checks account for lock
 	
@@ -120,53 +140,53 @@ public class UserAccessManager
 	 * @throws InvalidCommandException
 	 */
 	public boolean verifyAccess(String username, String encryptedPassword)throws UserNotFoundException,  AccountLockedException, InvalidCommandException
-	{
+	{	
 		
-		final boolean doesExist = false;
-		int low =0;
+		
+		int userIndex = binarySearch(username);
+		try {
+		if(userIndex == -1) {
+			throw new UserNotFoundException("Unable to find user.");
+		}
+		UserAccount user = Accounts.get(userIndex);
+		
+		if(user.checkStatus() == isLocked)
+			throw new AccountLockedException("Account is locked. Try again in a few hours.");
+		}catch(UserNotFoundException e) {
+			System.out.println(e.getMessage());
+			return false;
+		}catch(AccountLockedException e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+
+		return true;
+	}
+	
+	public int binarySearch(String username) {
+		int low =0 ;
 		int high = Accounts.size() - 1;
 		
-		try {
-			while(low<=high) 
-			{
-				int middle = low + (high-low)/2;
+		while(low<=high)
+		{
+			int middle = low +(high-low)/2;			
 				UserAccount account = Accounts.get(middle);
 				String dataUsername = account.getUser();
 				
 				if(dataUsername.equals(username)) 
 				{	
-					
-					if(account.checkStatus() == isLocked)
-						throw new AccountLockedException("Account is locked. Try again in a few hours.");
-							
+					return middle;
 				}
 				else if(dataUsername.compareTo(username) < 0)
 				{
 					low = middle + 1;
-				}
+				}				
 				else 
 				{
 					high = middle - 1;
 				}	
-			}
-			
-			if(!doesExist)
-				throw new UserNotFoundException("Unfortunately, this given user does not exist.");
-			
 		}
-		catch(AccountLockedException e) 
-		{
-			System.out.println(e.getMessage());
-			return false;
-		}
-		catch(UserNotFoundException e) 
-		{
-			System.out.println(e.getMessage());
-			return false;
-		}
-		
-		
-		return true;
+		return -1;
 	}
 	
 }
