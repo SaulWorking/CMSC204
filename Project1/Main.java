@@ -9,10 +9,8 @@ public class Main {
 		String userInput = "";
 		
 		while(!userInput.equals("exit")){
-			userInput = scanner.nextLine();
-			System.out.println(userInput);
+			userInput = scanner.nextLine().trim();
 			checkCommand(userInput,manager);
-			System.out.println("Bruh");
 		}
 		
 		scanner.close();
@@ -27,37 +25,44 @@ public class Main {
 
 		try {
 			if(userInfo.length < 2)
-				throw new InvalidCommandException("");
+				throw new InvalidCommandException("Invalid Command");
 			
 			String command = userInfo[0];
 			String commandSpecification = userInfo[1];
+
 				switch(command){
 
 					case "add"->{
-						System.out.println("Password:");
-						String password = scan.next();
+						System.out.print("Password: ");
+						String password = scan.nextLine();
 						manager.addUser(commandSpecification,Utilities.encryptPassword(password));
 				
 					}
 				
 					case "verify"->{
-						System.out.println("Password:");
-						String password = scan.next();
-						manager.verifyAccess(commandSpecification, password);
+						System.out.print("Password: ");
+						String password = scan.nextLine();
+						manager.verifyAccess(commandSpecification, Utilities.encryptPassword(password));
+							System.out.println("Access verified");
+
 				
 					}
 					
 					case "load" ->{
 						manager.loadAccounts(commandSpecification);
 					}
+					
+					default -> {
+						throw new InvalidCommandException("Invalid Command");
+					}
 		
 				}	
 			}catch(InvalidCommandException e) {
 				System.out.println(e.getMessage());
 			}catch(DuplicateUserException e) {				
-				System.out.println("duplicate");
+				System.out.println(e.getMessage());
 			}catch(PasswordIncorrectException e) {				
-				System.out.println("Incorrect Password");
+				System.out.println(e.getMessage());
 			} catch (UserNotFoundException e) {
 				System.out.println(e.getMessage());
 			} catch (AccountLockedException e) {

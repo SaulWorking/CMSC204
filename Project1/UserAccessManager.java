@@ -12,9 +12,6 @@ public class UserAccessManager
 	private List<UserAccount> Accounts;
 	
 
-	
-
-	
 	public UserAccessManager()
 	{
 		Accounts = new ArrayList<>(); 
@@ -81,11 +78,7 @@ public class UserAccessManager
 		}
 		Accounts.add(new UserAccount(username,encryptedPassword));
 
-			for(int i =0; i<Accounts.size();i++) 
-			{
-				System.out.print(Accounts.get(i).getUser() + " ");
-			}
-			System.out.println('\n');
+
 		
 	}
 	
@@ -109,7 +102,7 @@ public class UserAccessManager
 		if(userIndex == -1)
 			throw new UserNotFoundException("Unable to remove invalid user.");
 		
-		Accounts.remove(0);
+		Accounts.remove(userIndex);
 	}
 	
 	//use binary search for 
