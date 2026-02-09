@@ -24,7 +24,6 @@ public class UserAccount
 	public String getEncryptedPassword() {return encryptedPassword;}
 	public String getUser() {return username;}
 
-
 	public boolean checkPassword(String password) throws AccountLockedException, PasswordIncorrectException {
 			if(locked)
 				throw new AccountLockedException("Cannot return password. Too many password attempts have been made.");
@@ -39,7 +38,6 @@ public class UserAccount
 	 * Users have a limit of three password attempts
 	 */
 
-	
 	public void incrementFailure() {failureCount++;}
 	/**
 	 * Resets user's password failure.
@@ -51,13 +49,23 @@ public class UserAccount
 	 * @return Account status of user.
 	 */
 	
+	/**
+	 * Returns status of user account.
+	 * 
+	 * @return locked;
+	 */
 	public boolean checkStatus() {return locked;};
-
-	public void lockAccount() {locked = true;}
 	
 	/**
+	 * Locks user account.
 	 * 
 	 */
+	public void lockAccount()
+	{
+		if(failureCount >= 3)
+			locked = true;
+	}
+
 	public boolean equals(Object obj)
 	{
 		if(this == obj)
@@ -95,7 +103,6 @@ public class UserAccount
 			userInfo += " Account Locked.";
 			return userInfo;
 		}
-		
 		return userInfo;
 	}
 	

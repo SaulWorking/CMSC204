@@ -27,7 +27,6 @@ public class UserAccessManager
 	 */
 	public void loadAccounts(String filename)throws FileNotFoundException
 	{
-	
 			File dataFile= new File(filename);
 			if(!dataFile.exists())
 				throw new FileNotFoundException("Unable to load invalid file");
@@ -42,7 +41,6 @@ public class UserAccessManager
 				
 				String userInfo[] = data.split(regex);
 				
-				
 				String username = userInfo[0];
 				String encryptedPassword = userInfo[1];
 				
@@ -50,7 +48,6 @@ public class UserAccessManager
 				Accounts.add(userAccount);
 			}
 			reader.close();
-				
 		}
 
 	
@@ -77,9 +74,6 @@ public class UserAccessManager
 			}
 		}
 		Accounts.add(new UserAccount(username,encryptedPassword));
-
-
-		
 	}
 	
 	
@@ -92,8 +86,6 @@ public class UserAccessManager
 	 */
 	public void removeUser(String username)throws UserNotFoundException, InvalidCommandException
 	{
-		
-		
 		if(username == null || username.isEmpty())
 			throw new InvalidCommandException("Enter a valid user to remove.");
 			
@@ -121,12 +113,11 @@ public class UserAccessManager
 	{	
 		int userIndex = linearSearch(username);
 
-	
-			if(username == null || username.equals("") || encryptedPassword == null || encryptedPassword.equals("")) 
+			if(username == null || username.isEmpty() || encryptedPassword == null || encryptedPassword.isEmpty()) 
 				throw new InvalidCommandException("Cannot add verify incorrect user.");
 		
 			if(userIndex == -1) 
-				throw new UserNotFoundException("Unable to verify no such user.");	
+				throw new UserNotFoundException(username + " " + "not found");	
 			
 			UserAccount user = Accounts.get(userIndex);
 
@@ -147,8 +138,8 @@ public class UserAccessManager
 		return true;
 	}
 	
-	public int linearSearch(String username) {
-	
+	public int linearSearch(String username)
+	{
 		for(int index=0; index<Accounts.size();index++) 
 		{
 			UserAccount user = Accounts.get(index);

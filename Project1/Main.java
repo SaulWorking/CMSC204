@@ -8,49 +8,55 @@ public class Main {
 		Scanner scanner = new Scanner(System.in);
 		String userInput = "";
 		
+		userInput = scanner.nextLine().trim();
+
+		
 		while(!userInput.equals("exit")){
-			userInput = scanner.nextLine().trim();
-			checkCommand(userInput,manager);
+			checkCommand(scanner, userInput,manager);
+			userInput = scanner.nextLine();
+
 		}
 		
-		scanner.close();
 	}
 	
 
-	public static void checkCommand(String userInput, UserAccessManager manager) {
-		Scanner scan = new Scanner(System.in);
+	public static void checkCommand(Scanner scan, String userInput, UserAccessManager manager) {
 		String regex = "\\s+";
 		String userInfo[] = userInput.split(regex);
 		
 
 		try {
-			if(userInfo.length < 2)
+			if(userInfo.length < 2) {				
 				throw new InvalidCommandException("Invalid Command");
-			
+			}
 			String command = userInfo[0];
 			String commandSpecification = userInfo[1];
-
 				switch(command){
 
 					case "add"->{
 						System.out.print("Password: ");
-						String password = scan.nextLine();
+						String password = scan.nextLine().trim();
 						manager.addUser(commandSpecification,Utilities.encryptPassword(password));
-				
+						System.out.println("password Added.");
 					}
-				
+						
 					case "verify"->{
 						System.out.print("Password: ");
-						String password = scan.nextLine();
+						String password = scan.nextLine().trim();
 						manager.verifyAccess(commandSpecification, Utilities.encryptPassword(password));
-							System.out.println("Access verified");
+							System.out.println("Access verified");							
 					}
 					
-					case "load" ->{
+					case "remove"->{
+						manager.removeUser(commandSpecification);
+						System.out.println(commandSpecification + " has been removed.");
+					}
+					
+					case "load" ->{						
 						manager.loadAccounts(commandSpecification);
 					}
 					
-					default -> {
+					default -> {						
 						throw new InvalidCommandException("Invalid Command");
 					}
 		
@@ -68,10 +74,6 @@ public class Main {
 			} catch (FileNotFoundException e) {
 				System.out.println(e.getMessage());
 			}
-		
-		
-		
-		
 	}	
 
 }
