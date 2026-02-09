@@ -1,43 +1,45 @@
 
-public class UserAccount {
+public class UserAccount
+{
 	public final int MAX_FAILURES = 3;
-	private String username;
-	private String encryptedPassword;
-	private int failureCount;
-	private boolean locked;
+	String username;
+	String encryptedPassword;
+	int failureCount;
+	boolean locked;
 	
 	
-	public UserAccount(String username, String encryptedPassword) {
+	public UserAccount(String username, String encryptedPassword)
+	{
 		this.username = username;
 		this.encryptedPassword = encryptedPassword;
 		failureCount  = 0;
 		locked = false;
 	}
 	
-	public UserAccount() {
+	public UserAccount()
+	{
 		this("InvalidUser","");
 	}
 	
-	public String getEncryptedPassword() throws AccountLockedException, PasswordIncorrectException {
-		
-		if(locked)
-			throw new AccountLockedException("Cannot return password. Too many password attempts have been made.");
-		
-		if(encryptedPassword != "PasswordTemplateStringReadFile")
-			throw new PasswordIncorrectException("Incorrect Password Entered?");
-		
-		return encryptedPassword;
-	}
+	public String getEncryptedPassword() {return encryptedPassword;}
 	public String getUser() {return username;}
 
 
-	public boolean checkPassword() {
-		return false;
+	public boolean checkPassword(String password) throws AccountLockedException, PasswordIncorrectException {
+			if(locked)
+				throw new AccountLockedException("Cannot return password. Too many password attempts have been made.");
+		
+			if(!Utilities.encryptPassword(password).equals(encryptedPassword))
+				throw new PasswordIncorrectException("Incorrect Password Entered?");
+
+		return true;
 	}
 	/**
 	 * Increases the amount of failures a user has.
 	 * Users have a limit of three password attempts
 	 */
+
+	
 	public void incrementFailure() {failureCount++;}
 	/**
 	 * Resets user's password failure.
@@ -50,11 +52,14 @@ public class UserAccount {
 	 */
 	
 	public boolean checkStatus() {return locked;};
+
+	public void lockAccount() {locked = true;}
 	
 	/**
 	 * 
 	 */
-	public boolean equals(Object obj){
+	public boolean equals(Object obj)
+	{
 		if(this == obj)
 			return true;
 		
@@ -74,17 +79,19 @@ public class UserAccount {
 		if(!(this.failureCount == clone.failureCount))
 			return false;
 		
-		if(!(this.locked = clone.locked))
+		if(!(this.locked == clone.locked))
 			return false;
 		
 		return true;
 	}
 	
-	public String toString() {
+	public String toString() 
+	{
 		String userInfo;
 		userInfo = username + " " + encryptedPassword + " " + failureCount;
 
-		if(locked) {
+		if(locked)
+		{
 			userInfo += " Account Locked.";
 			return userInfo;
 		}
