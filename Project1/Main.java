@@ -44,8 +44,6 @@ public class Main {
 						String password = scan.nextLine();
 						manager.verifyAccess(commandSpecification, Utilities.encryptPassword(password));
 							System.out.println("Access verified");
-
-				
 					}
 					
 					case "load" ->{

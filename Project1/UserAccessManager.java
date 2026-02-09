@@ -120,19 +120,18 @@ public class UserAccessManager
 	public boolean verifyAccess(String username, String encryptedPassword)throws InvalidCommandException,  UserNotFoundException, AccountLockedException, PasswordIncorrectException
 	{	
 		int userIndex = linearSearch(username);
-	
 
 	
 			if(username == null || username.equals("") || encryptedPassword == null || encryptedPassword.equals("")) 
-				throw new InvalidCommandException("Cannot add invalid user.");
+				throw new InvalidCommandException("Cannot add verify incorrect user.");
 		
 			if(userIndex == -1) 
-				throw new UserNotFoundException("Unable to verify invalid user.");	
+				throw new UserNotFoundException("Unable to verify no such user.");	
 			
 			UserAccount user = Accounts.get(userIndex);
 
 			if(user.checkStatus() == isLocked)
-				throw new AccountLockedException("Unable to verify locked account.");
+				throw new AccountLockedException("error: Unable to verify locked account.");
 			
 			if(!encryptedPassword.equals(user.getEncryptedPassword()))
 			{
@@ -141,7 +140,7 @@ public class UserAccessManager
 				if(user.failureCount >= 3)
 					user.lockAccount(); 
 			
-				throw new PasswordIncorrectException("Cannot verify invalid password.");
+				throw new PasswordIncorrectException("Cannot verify incorrect password.");
 			}
 		
 		user.resetFailure();
