@@ -2,10 +2,10 @@
 
 class UserAccount{
 + {readonly} {static} MAX_FAILURES: int = 3
-- username: String
-- encryptedPassword: String
-- failureCount: int
-- locked: boolean
+ username: String
+ encryptedPassword: String
+ failureCount: int
+ locked: boolean
 
 + getEncryptedPassword(): String
 + checkPassword(): boolean throws AccountLockedException, PasswordIncorrectException
