@@ -11,7 +11,6 @@ public class UserAccessManager
 	private final boolean isLocked = true;
 	private List<UserAccount> Accounts;
 	
-
 	public UserAccessManager()
 	{
 		Accounts = new ArrayList<>(); 
@@ -27,7 +26,7 @@ public class UserAccessManager
 	 */
 	public void loadAccounts(String filename)throws FileNotFoundException
 	{
-			File dataFile= new File(filename);
+			File dataFile = new File(filename);
 			if(!dataFile.exists())
 				throw new FileNotFoundException("Unable to load invalid file");
 			
@@ -98,8 +97,7 @@ public class UserAccessManager
 		Accounts.remove(userIndex);
 	}
 	
-	//use binary search for 
-	//checks account for lock
+
 																																
 	/**
 	 * Checks if a given password and username is valid in the Accounts list.
@@ -140,6 +138,14 @@ public class UserAccessManager
 		return true;
 	}
 	
+	/**
+	 * Checks for existence of a user in the Accounts list.
+	 * Returns -1 if user doesn't exist. 
+	 * 
+	 * 
+	 * @param username
+	 * @return index of user in Accounts list.
+	 */
 	public int linearSearch(String username)
 	{
 		for(int index=0; index<Accounts.size();index++) 

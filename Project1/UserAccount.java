@@ -57,8 +57,7 @@ public class UserAccount
 	public boolean checkStatus() {return locked;};
 	
 	/**
-	 * Locks user account.
-	 * 
+	 * Locks user account. 
 	 */
 	public void lockAccount()
 	{
