@@ -11,3 +11,5 @@
 /InvalidCommandException.class
 /UserNotFoundException.class
 /UserAccessManager.class
+/AllTests.class
+/UserAccessManagerStudentTest.class

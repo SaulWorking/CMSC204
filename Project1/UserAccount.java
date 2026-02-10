@@ -24,13 +24,23 @@ public class UserAccount
 	public String getEncryptedPassword() {return encryptedPassword;}
 	public String getUser() {return username;}
 
+	/**
+	 *Client user password checking 
+	 * 
+	 * @param password
+	 * @return
+	 * @throws AccountLockedException
+	 * @throws PasswordIncorrectException
+	 */
 	public boolean checkPassword(String password) throws AccountLockedException, PasswordIncorrectException {
 			if(locked)
 				throw new AccountLockedException("Cannot return password. Too many password attempts have been made.");
 		
-			if(!Utilities.encryptPassword(password).equals(encryptedPassword))
-				throw new PasswordIncorrectException("Incorrect Password Entered?");
-
+			if(!Utilities.encryptPassword(password).equals(encryptedPassword)) {
+				incrementFailure();
+				throw new PasswordIncorrectException("Incorrect Password Entered.");
+			}
+		resetFailure();
 		return true;
 	}
 	/**

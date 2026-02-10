@@ -28,7 +28,7 @@ public class UserAccessManager
 	{
 			File dataFile = new File(filename);
 			if(!dataFile.exists())
-				throw new FileNotFoundException("Unable to load invalid file");
+				throw new FileNotFoundException("Unable to load file: " + filename);
 			
 			Scanner reader = new Scanner(dataFile);
 			
@@ -69,7 +69,7 @@ public class UserAccessManager
 		{
 			if(user.getUser().equals(username))
 			{
-				throw new DuplicateUserException("Cannot add duplicate user.");
+				throw new DuplicateUserException("User " + "\'" + user.getUser() + "\' " + "already exists");
 			}
 		}
 		Accounts.add(new UserAccount(username,encryptedPassword));
@@ -92,7 +92,7 @@ public class UserAccessManager
 		int userIndex = linearSearch(username);
 		
 		if(userIndex == -1)
-			throw new UserNotFoundException("Unable to remove invalid user.");
+			throw new UserNotFoundException("Unable to remove invalid user: " + username);
 		
 		Accounts.remove(userIndex);
 	}
@@ -122,7 +122,7 @@ public class UserAccessManager
 			UserAccount user = Accounts.get(userIndex);
 
 			if(user.checkStatus() == isLocked)
-				throw new AccountLockedException("error: Unable to verify locked account.");
+				throw new AccountLockedException("error: Unable to verify locked account: " + username);
 			
 			if(!encryptedPassword.equals(user.getEncryptedPassword()))
 			{
