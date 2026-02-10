@@ -18,7 +18,7 @@ public class UserAccessManager
 	}
 
 	/*
-	 * This method loads all user accounts from a txt file. This the file's format.
+	 * This method loads all user accounts from a .txt file. This the file's format.
 	 * User, EncrpytedPassword
 	 * User, EncrpytedPassword
 	 * 
@@ -77,23 +77,19 @@ public class UserAccessManager
 			}
 		}
 		Accounts.add(new UserAccount(username,encryptedPassword));
-
-
-		
 	}
 	
 	
 
 	/**
 	 * This removes a given user from the UserAccessManager Accounts list.
+	 * 
 	 * @param username
 	 * @throws UserNotFoundException
 	 * @throws InvalidCommandException
 	 */
 	public void removeUser(String username)throws UserNotFoundException, InvalidCommandException
 	{
-		
-		
 		if(username == null || username.isEmpty())
 			throw new InvalidCommandException("Enter a valid user to remove.");
 			
@@ -109,6 +105,7 @@ public class UserAccessManager
 	//checks account for lock
 																																
 	/**
+	 * Checks if a given password and username is valid in the Accounts list.
 	 *
 	 * @param username
 	 * @param encryptedPassword
