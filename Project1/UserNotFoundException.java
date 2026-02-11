@@ -1,4 +1,6 @@
-
+/**
+ * Thrown if user cannot be found in system.
+ */
 public class UserNotFoundException extends Exception {
 	public UserNotFoundException(String msg) {
 		super(msg);

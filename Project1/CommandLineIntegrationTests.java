@@ -127,7 +127,8 @@ public class CommandLineIntegrationTests {
 
         String output = runCliSession(input);
         assertTrue(output.toLowerCase().contains("incorrect") ||
-                   output.toLowerCase().contains("failed") ||
+                   output.toLowerCase().contains("fa"
+                   		+ "iled") ||
                    output.toLowerCase().contains("error"),
                    "Expected message indicating incorrect password.");
     }

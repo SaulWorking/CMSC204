@@ -6,23 +6,36 @@ import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+
+/**
+ * Manager class that provides methods for managing users.
+ */
 public class UserAccessManager
 {
-	private final boolean isLocked = true;
+	/**
+	 * Comparison variable. To be used for comparison readability
+	 */
+	private static final boolean isLocked = true;
+	
+	/**
+	 * List of accounts.
+	 */
 	private List<UserAccount> Accounts;
 	
+	/**
+	 * Initializes Accounts list with an array list
+	 */
 	public UserAccessManager()
 	{
 		Accounts = new ArrayList<>(); 
 	}
 
-	/*
-	 * This method loads all user accounts from a .txt file. This the file's format.
-	 * User, EncrpytedPassword
-	 * User, EncrpytedPassword
+	/**
+	 * This method loads all user accounts from a .txt file. 
 	 * 
-	 * @param filename 
-	 * @throws FileNotFoundException
+	 * 
+	 * @param filename file to be opened
+	 * @throws FileNotFoundException exception thrown if file is not found
 	 */
 	public void loadAccounts(String filename)throws FileNotFoundException
 	{
@@ -55,10 +68,10 @@ public class UserAccessManager
 	 * This method adds users to the the UserAccessManager Accounts list.
 	 * It assumes the users are already sorted.
 	 * 
-	 * @param username
-	 * @param encryptedPassword
-	 * @throws DuplicateUserException
-	 * @throws InvalidCommandException
+	 * @param username user to be added
+	 * @param encryptedPassword encrpyt password before adding
+	 * @throws DuplicateUserException thrown if there is a duplicate user
+	 * @throws InvalidCommandException thrown if username or encrypted password is null/empty
 	 */
 	public void addUser(String username, String encryptedPassword)throws DuplicateUserException,InvalidCommandException
 	{	
@@ -80,9 +93,9 @@ public class UserAccessManager
 	/**
 	 * This removes a given user from the UserAccessManager Accounts list.
 	 * 
-	 * @param username
-	 * @throws UserNotFoundException
-	 * @throws InvalidCommandException
+	 * @param username user to be removed
+	 * @throws UserNotFoundException thrown if there is a user not found
+	 * @throws InvalidCommandException thrown if username or encrypted password is null/empty
 	 */
 	public void removeUser(String username)throws UserNotFoundException, InvalidCommandException
 	{
@@ -102,9 +115,9 @@ public class UserAccessManager
 	/**
 	 * Checks if a given password and username is valid in the Accounts list.
 	 *
-	 * @param username
-	 * @param encryptedPassword
-	 * @return Returns the access status of the user.
+	 * @param username user to be verified
+	 * @param encryptedPassword password encrypted by Utilities method
+	 * @return returns the access status of the user.
 	 * @throws UserNotFoundException
 	 * @throws AccountLockedException
 	 * @throws InvalidCommandException
@@ -142,8 +155,7 @@ public class UserAccessManager
 	 * Checks for existence of a user in the Accounts list.
 	 * Returns -1 if user doesn't exist. 
 	 * 
-	 * 
-	 * @param username
+	 * @param username user to be searched
 	 * @return index of user in Accounts list.
 	 */
 	public int linearSearch(String username)

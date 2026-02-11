@@ -39,32 +39,33 @@ class UserAccessManagerStudentTest {
  		 });
 
  		 assertThrows(DuplicateUserException.class,() -> manager1.addUser("hacker", "sleepy"));
-
 	}
 
 	@Test
 	void testRemoveUser() {
-		
  		 assertDoesNotThrow(() ->{
 			 manager1.addUser("toBeRemoved", Utilities.encryptPassword("remover"));
 			 manager1.removeUser("toBeRemoved");
 		  });
  		 
  		 assertThrows(UserNotFoundException.class,() -> manager1.verifyAccess("toBeRemoved",Utilities.encryptPassword("remover")));
-			 
-			 
 	}
 
 	@Test
 	void testVerifyAccess() {
-		
-		assertDoesNotThrow(() ->{
-			manager1.addUser("dad",Utilities.encryptPassword("aiw"));
-			for(int i=0; i<2; i++) {
-				manager1.verifyAccess("dad", Utilities.encryptPassword("aiw"));
+			try {
+				manager1.addUser("dad",Utilities.encryptPassword("GoodPassword"));
+				
+			} catch (DuplicateUserException | InvalidCommandException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		});
-		
+			for(int i=0; i<3; i++) {
+				assertThrows(PasswordIncorrectException.class,() -> manager1.verifyAccess("dad", Utilities.encryptPassword("BadPassword")));
+			}
+	
+			assertThrows(AccountLockedException.class,() -> manager1.verifyAccess("dad", Utilities.encryptPassword("aiw")));
+
 		
 	}
 

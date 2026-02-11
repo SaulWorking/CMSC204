@@ -1,13 +1,26 @@
-
+/**
+ * Individual class for users
+ */
 public class UserAccount
 {
 	public final int MAX_FAILURES = 3;
+	/** User's user*/
+
 	String username;
+	/** User password hashed in SHA-256*/
 	String encryptedPassword;
+	/**Counter for password attempts*/
 	int failureCount;
+	/**Account Status */
 	boolean locked;
 	
 	
+	/**
+	 * Creates a user account
+	 * 
+	 * @param username starting username
+	 * @param encryptedPassword starter encrypted password
+	 */
 	public UserAccount(String username, String encryptedPassword)
 	{
 		this.username = username;
@@ -16,21 +29,32 @@ public class UserAccount
 		locked = false;
 	}
 	
+	/**
+	 * constructs two empty strings
+	 */
 	public UserAccount()
 	{
-		this("InvalidUser","");
+		this("","");
 	}
 	
+	/**
+	 * Returns the user's encrypted Password
+	 * @return encryptedPassword the encrypted password
+	 */
 	public String getEncryptedPassword() {return encryptedPassword;}
+	
+	/**
+	 * Returns User Account's username
+	 * @return username User Account's username.
+	 */
 	public String getUser() {return username;}
 
 	/**
-	 *Client user password checking 
 	 * 
-	 * @param password
-	 * @return
-	 * @throws AccountLockedException
-	 * @throws PasswordIncorrectException
+	 * @param password password to be checked
+	 * @return true, if password doesnt fail.
+	 * @throws AccountLockedException thrown if three attempts have been made.
+	 * @throws PasswordIncorrectException thrown if password is incorrect.
 	 */
 	public boolean checkPassword(String password) throws AccountLockedException, PasswordIncorrectException {
 			if(locked)
@@ -74,7 +98,10 @@ public class UserAccount
 		if(failureCount >= 3)
 			locked = true;
 	}
-
+	
+	/**
+	 * Checks each User Account property for equality.
+	 */
 	public boolean equals(Object obj)
 	{
 		if(this == obj)
@@ -102,6 +129,9 @@ public class UserAccount
 		return true;
 	}
 	
+	/**
+	 * Returns a copy of User Account via string.
+	 */
 	public String toString() 
 	{
 		String userInfo;
