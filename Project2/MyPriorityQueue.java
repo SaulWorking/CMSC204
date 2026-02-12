@@ -15,12 +15,25 @@ public class MyPriorityQueue<T> implements PriorityQueueADT<T> {
 	
 	public MyPriorityQueue(int capacity, Comparator<T> comparator) {
 	
-		this.comparator = null;
+		this.comparator = comparator;
 		
 
 		//The cast is safe because the array contains null entries
 		@SuppressWarnings("unchecked")
 		T[] temp = (T[]) new Object[capacity];
+		
+		priorityQueue = temp;
+		numOfEntries = 0;
+		
+	}
+	
+	public MyPriorityQueue(Comparator<T> comparator) {
+		
+		this.comparator = comparator;
+
+		//The cast is safe because the array contains null entries
+		@SuppressWarnings("unchecked")
+		T[] temp = (T[]) new Object[DEFAULT_CAPACITY];
 		
 		priorityQueue = temp;
 		
@@ -42,11 +55,9 @@ public class MyPriorityQueue<T> implements PriorityQueueADT<T> {
     	    numOfEntries++;
     	}
 
-    	
-    
     	for(int i =0; i<numOfEntries; i++) {
     		T queueElement = priorityQueue[i];
-    		if(comparator.compare(item, queueElement) <0) {
+    		if(comparator.compare(item, queueElement) > 0) {
     			priorityQueue[numOfEntries] = item;
     		}
     	}
@@ -64,11 +75,19 @@ public class MyPriorityQueue<T> implements PriorityQueueADT<T> {
     	if(isEmpty())
     		throw new NoSuchElementException();
     	
-    	T temp = priorityQueue[0];
+    	T tempItem = priorityQueue[0];
+    	
+    	 for(int i =0; i<numOfEntries; i++) {
+    		 
+    		T queueElement = priorityQueue[i];
+    		if(comparator.compare(tempItem, queueElement) > 0) {
+    			tempItem = queueElement;
+    		}
+    	}
     	
     	priorityQueue[0] = null;
     	numOfEntries--;
-    	return temp;	
+    	return tempItem;	
     }
 
     /**
