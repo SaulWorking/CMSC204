@@ -1,18 +1,24 @@
+
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 
-public class MyPriorityQueue<T> implements PriorityQueueADT<T>, Comparator<T>{
+public class MyPriorityQueue<T> implements PriorityQueueADT<T> {
 
-	T[] priorityQueue;
-	int[] priority;
+	private T[] priorityQueue;
+    private Comparator<T> comparator;
+	
 	int numOfEntries;
 	
 	private final static int DEFAULT_CAPACITY = 10;
 	
    
 	
-	public MyPriorityQueue(int capacity) {
-	//The cast is safe because the array contains null entries
+	public MyPriorityQueue(int capacity, Comparator<T> comparator) {
+	
+		this.comparator = null;
+		
+
+		//The cast is safe because the array contains null entries
 		@SuppressWarnings("unchecked")
 		T[] temp = (T[]) new Object[capacity];
 		
@@ -31,6 +37,19 @@ public class MyPriorityQueue<T> implements PriorityQueueADT<T>, Comparator<T>{
     	if(item == null)
     		throw new IllegalArgumentException();
     	
+    	if(numOfEntries <=0) {
+    		priorityQueue[0] = item;
+    	    numOfEntries++;
+    	}
+
+    	
+    
+    	for(int i =0; i<numOfEntries; i++) {
+    		T queueElement = priorityQueue[i];
+    		if(comparator.compare(item, queueElement) <0) {
+    			priorityQueue[numOfEntries] = item;
+    		}
+    	}
     	
     	numOfEntries++;
     	return;
@@ -102,10 +121,4 @@ public class MyPriorityQueue<T> implements PriorityQueueADT<T>, Comparator<T>{
     	return temp;
     }
 
-	@Override
-	public int compare(T o1, T o2) {
-		
-		return -1;
-		// TODO Auto-generated method stub
-	}
 }
