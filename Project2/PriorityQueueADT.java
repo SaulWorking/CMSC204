@@ -10,7 +10,7 @@ import java.util.NoSuchElementException;
  */
 public interface PriorityQueueADT<T> {
 
-	final static int MAX_CAPACITY =1000;  
+	final static int MAX_CAPACITY = 1000;  
     /**
      * Inserts an item into the queue according to the priority order.
      * @param item the element to insert (cannot be null)

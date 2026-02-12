@@ -1,11 +1,17 @@
-
+import java.util.Arrays;
+import java.util.NoSuchElementException;
 public class MyStack<T> implements StackADT<T>{
 	
+	T[] stack;
+	int numOfEntries;
 	
+	static final int DEFAULT_CAPACITY = 10;
 	
-	
-	public MyStack() {
-		
+	public MyStack(int capacity) {		
+		@SuppressWarnings("unchecked")
+		T[] temp = (T[]) new Object[capacity];
+		stack = temp;	
+		numOfEntries = 0;
 	}
 	
     /**
@@ -15,7 +21,15 @@ public class MyStack<T> implements StackADT<T>{
      * @throws IllegalStateException if stack has reached max capacity
      */
     public void push(T item) {
+    	if(item == null)
+    		throw new IllegalArgumentException();
     	
+    	if(numOfEntries >= stack.length)
+    		throw new IllegalStateException();
+    	
+    	//provided that i do not need to expand size.
+    	stack[numOfEntries] = item;
+    	numOfEntries++;
     }
 
     /**
@@ -24,8 +38,15 @@ public class MyStack<T> implements StackADT<T>{
      * @throws NoSuchElementException if the stack is empty
      */
     public T pop() {
-    	T obj = null;
-		return obj;
+    	if(isEmpty())
+    		throw new NoSuchElementException();
+    	
+    	int topIndex = numOfEntries - 1;
+    	
+    	T temp = stack[topIndex];
+    	stack[topIndex] = null;
+    	
+		return temp;
     }
 
     /**
@@ -34,8 +55,13 @@ public class MyStack<T> implements StackADT<T>{
      * @throws NoSuchElementException if the stack is empty
      */
     public T peek() {
-    	T obj = null;
-		return obj;
+    	 if(isEmpty())
+    		throw new NoSuchElementException();
+    	 
+     	int topIndex = numOfEntries - 1;
+
+    	//no idea if i need to create a new copy.
+		return stack[topIndex];
     }
 
     /**
@@ -43,8 +69,16 @@ public class MyStack<T> implements StackADT<T>{
      * @return true if the stack has no elements, false otherwise
      */
     public boolean isEmpty() {
-		return false;
-    	
+        
+    	//i'm sure we can check the first element
+    	//but not now.
+    	for(T element : stack) {
+    		if(element != null) {
+    			return false;
+    		}
+    	}
+ 
+    	return true; 
     }
 
     /**
@@ -52,7 +86,7 @@ public class MyStack<T> implements StackADT<T>{
      * @return number of elements
      */
     public int size() {
-    	return -1;
+    	return numOfEntries;
     }
     
     /**
@@ -61,7 +95,6 @@ public class MyStack<T> implements StackADT<T>{
      * element at index size()-1 is the top.
      */
     public Object[] toArray() {
-    	 T []obj = null;
-		return obj;
+		return Arrays.copyOf(stack, stack.length);
     }
 }

@@ -1,7 +1,24 @@
+import java.util.Comparator;
+import java.util.NoSuchElementException;
 
-public class MyPriorityQueue<T> implements PriorityQueueADT<T>{
-    
-	public MyPriorityQueue() {
+public class MyPriorityQueue<T> implements PriorityQueueADT<T>, Comparator<T>{
+
+	T[] priorityQueue;
+	int[] priority;
+	int numOfEntries;
+	
+	private final static int DEFAULT_CAPACITY = 10;
+	
+   
+	
+	public MyPriorityQueue(int capacity) {
+	//The cast is safe because the array contains null entries
+		@SuppressWarnings("unchecked")
+		T[] temp = (T[]) new Object[capacity];
+		
+		priorityQueue = temp;
+		
+		numOfEntries = 0;
 		
 	}
 	
@@ -10,7 +27,14 @@ public class MyPriorityQueue<T> implements PriorityQueueADT<T>{
      * @param item the element to insert (cannot be null)
      * @throws IllegalArgumentException if item is null
      */
-    public void enqueue(T item) {}
+    public void enqueue(T item) {
+    	if(item == null)
+    		throw new IllegalArgumentException();
+    	
+    	
+    	numOfEntries++;
+    	return;
+    }
 
     /**
      * Removes and returns the highest-priority item.
@@ -18,8 +42,14 @@ public class MyPriorityQueue<T> implements PriorityQueueADT<T>{
      * @throws NoSuchElementException if the queue is empty
      */
     public T dequeue() {
-    	T obj = null;
-    	return obj;
+    	if(isEmpty())
+    		throw new NoSuchElementException();
+    	
+    	T temp = priorityQueue[0];
+    	
+    	priorityQueue[0] = null;
+    	numOfEntries--;
+    	return temp;	
     }
 
     /**
@@ -27,9 +57,10 @@ public class MyPriorityQueue<T> implements PriorityQueueADT<T>{
      * @return the front element
      * @throws NoSuchElementException if the queue is empty
      */
-    public T peek() {    
-    	T obj = null;
-    	return obj;
+    public T peek() {
+    	if(isEmpty())
+    		throw new NoSuchElementException();
+    	return priorityQueue[0];
     }
 
     /**
@@ -37,7 +68,16 @@ public class MyPriorityQueue<T> implements PriorityQueueADT<T>{
      * @return true if empty, false otherwise
      */
     public boolean isEmpty() {
-    	return false;
+    
+    	//i'm sure we can check the first element
+    	//but not now.
+    	for(T element : priorityQueue) {
+    		if(element != null) {
+    			return false;
+    		}
+    	}
+ 
+    	return true; 
     }
 
     /**
@@ -45,7 +85,7 @@ public class MyPriorityQueue<T> implements PriorityQueueADT<T>{
      * @return number of elements
      */
     public int size() {
-    	return -1;
+    	return numOfEntries;
     }
     
     /**
@@ -53,7 +93,19 @@ public class MyPriorityQueue<T> implements PriorityQueueADT<T>{
      * in the current internal order (not necessarily sorted by priority).
      */
     public Object[] toArray() {
-    	T [] objs = null;
-    	return objs;
+    	Object[] temp = new Object[priorityQueue.length];
+    	
+    	for(int i =0; i<priorityQueue.length;i++){
+    		temp[i] = priorityQueue[i];
+    	}
+    	
+    	return temp;
     }
+
+	@Override
+	public int compare(T o1, T o2) {
+		
+		return -1;
+		// TODO Auto-generated method stub
+	}
 }
