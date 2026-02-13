@@ -15,7 +15,7 @@ public class OrderComparator implements Comparator<Order> {
 		}
 		
 		if(o1.getDeadlineMinute() > o2.getArrivalMinute()) 
-			return SECOND_IS_GREATER;
+			return FIRST_IS_GREATER;
 		
 		return FAIL;
 	}
