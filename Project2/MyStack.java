@@ -7,6 +7,10 @@ public class MyStack<T> implements StackADT<T>{
 	
 	static final int DEFAULT_CAPACITY = 10;
 	
+	public MyStack() {
+		this(DEFAULT_CAPACITY);
+	}
+	
 	public MyStack(int capacity) {		
 		@SuppressWarnings("unchecked")
 		T[] temp = (T[]) new Object[capacity];
