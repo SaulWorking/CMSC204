@@ -3,13 +3,13 @@ import java.util.Comparator;
 import java.util.NoSuchElementException;
 
 public class MyPriorityQueue<T> implements PriorityQueueADT<T> {
-
-	private T[] priorityQueue;
-    private Comparator<T> comparator;
-	
-	int numOfEntries;
 	
 	private final static int DEFAULT_CAPACITY = 10;
+	
+	private T[] priorityQueue;
+    private Comparator<T> comparator;
+    private int numOfEntries;
+	
 	
    
 	
